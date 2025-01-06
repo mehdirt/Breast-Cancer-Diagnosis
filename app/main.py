@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import pickle
 import streamlit as st
@@ -69,7 +70,32 @@ def add_sidebar():
     
     return input_data
 
-def get_scaled_values(input_data, data_path):
+
+def add_prediction(input_data):
+    """"""
+    model = pickle.load(open("model/model.pkl", "rb"))
+    scalar = pickle.load(open("model/scalar.pkl", "rb"))
+
+    array = np.array(list(input_data.values())).reshape(1, -1)
+    scaled_array = scalar.transform(array)
+
+    prediction = model.predict(scaled_array)
+
+    st.subheader("Cell Cluster Prediction")
+    st.write("The cell cluster is:")
+
+    if prediction[0] == 0:
+        st.write('Benign')
+    else: 
+        st.write('Malicious')
+
+    st.write(f"Probability of being benign: ", model.predict_proba(scaled_array)[0][0])
+    st.write(f"Probability of being malicious: ", model.predict_proba(scaled_array)[0][1])
+
+    st.write("This app can assist medical professionals in making a diagnosis, but should not \
+              be used as a substitute for a professional diagnosis.")
+
+def get_scaled_values(input_dict, data_path):
     """"""
     data = clean_data(get_data(data_path))
 
@@ -77,10 +103,10 @@ def get_scaled_values(input_data, data_path):
 
     scaled_dict = {}
 
-    for key, value in input_data.items():
+    for key, value in input_dict.items():
         max_value = X[key].max()
         min_value = X[key].min()
-        scaled_value = (value - min_value) / max_value - min_value
+        scaled_value = (value - min_value) / (max_value - min_value)
         scaled_dict[key] = scaled_value
 
     return scaled_dict
@@ -118,7 +144,7 @@ def get_radar_chart(input_data):
         fill='toself',
         name='Standard Error'
     ))
-    
+
     fig.add_trace(go.Scatterpolar(
         r=[
             input_data['radius_worst'], input_data['texture_worst'], input_data['perimeter_worst'],
@@ -141,7 +167,6 @@ def get_radar_chart(input_data):
     )
 
     return fig
-
 
 def main():
     st.set_page_config(
@@ -166,7 +191,7 @@ def main():
         radar_chart = get_radar_chart(input_data)
         st.plotly_chart(radar_chart)
     with col2:
-        pass
+        add_prediction(input_data)
 
 
 if __name__ == '__main__':
