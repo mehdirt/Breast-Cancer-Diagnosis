@@ -2,7 +2,6 @@ import pandas as pd
 import pickle
 import streamlit as st
 import plotly.graph_objects as go
-
 # from utils.data_utils import get_data # ! MUST BE UNCOMMENTED
 
 def get_data(path): # ! MUST BE DELETED
@@ -17,6 +16,7 @@ def clean_data(data): # ! MUST BE DELETED
     data['diagnosis'] = data['diagnosis'].map({'M': 1, 'B': 0})
 
     return data
+
 
 def add_sidebar():
     """"""
@@ -69,8 +69,26 @@ def add_sidebar():
     
     return input_data
 
+def get_scaled_values(input_data, data_path):
+    """"""
+    data = clean_data(get_data(data_path))
+
+    X = data.drop(['diagnosis'], axis=1)
+
+    scaled_dict = {}
+
+    for key, value in input_data.items():
+        max_value = X[key].max()
+        min_value = X[key].min()
+        scaled_value = (value - min_value) / max_value - min_value
+        scaled_dict[key] = scaled_value
+
+    return scaled_dict
+
 def get_radar_chart(input_data):
     """"""
+    input_data = get_scaled_values(input_data, data_path="data/data.csv")
+
     categories = ['Radius', 'Texture', 'Perimeter', 'Area', 
                   'Smoothness', 'Compactness', 
                   'Concavity', 'Concave Points',
@@ -89,6 +107,7 @@ def get_radar_chart(input_data):
         fill='toself',
         name='Mean Value'
     ))
+
     fig.add_trace(go.Scatterpolar(
         r=[
             input_data['radius_se'], input_data['texture_se'], input_data['perimeter_se'], input_data['area_se'],
@@ -99,6 +118,7 @@ def get_radar_chart(input_data):
         fill='toself',
         name='Standard Error'
     ))
+    
     fig.add_trace(go.Scatterpolar(
         r=[
             input_data['radius_worst'], input_data['texture_worst'], input_data['perimeter_worst'],
