@@ -1,5 +1,8 @@
 # Breast Cancer Diagnosis
 
+![image](https://github.com/user-attachments/assets/9e8e25b8-20b1-415b-ab6c-c42cfd633fec)
+
+
 Welcome to the **Breast Cancer Diagnosis** project! This application uses machine learning to predict whether a breast tumor is malignant or benign based on a dataset of patient measurements. By combining data analysis, machine learning, and an intuitive web interface, this project demonstrates the power of AI in healthcare.
 
 ---
@@ -102,6 +105,15 @@ To run the project locally, follow these steps:
 - Explore the web app to see the project in action: **[Live Demo](https://breast-cancer-diagnosis-rt.streamlit.app)**
 - Users can adjust sliders corresponding to the tumor features and instantly view predictions.
 
----
+  ![image](https://github.com/user-attachments/assets/6c836823-f7b3-46d4-8609-89ac0c78ce9d)
 
+---
+## Contact Information
 Thank you for exploring the **Breast Cancer Diagnosis** project! If you have any feedback, feel free to reach out.
+
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://www.hopp.bio/mehdirt)
+[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:mahdirafati680@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mahdi-rafati-97420a197/)
+[![Medium](https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@mehdirt)
+[![Kaggle](https://img.shields.io/badge/Kaggle-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/mahdirafati)
+[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://x.com/itsmehdirt)
