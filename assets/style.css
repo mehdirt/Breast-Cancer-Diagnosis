@@ -3,3 +3,17 @@
     border-radius: 0.5rem;
     background-color: #7e99ab;
 }
+
+.diagnosis{
+    color: #fff;
+    padding: .2em .5em;
+    border-radius: .5em;
+}
+
+.diagnosis.benign {
+    background-color: #01db4b;
+}
+
+.diagnosis.malicious {
+    background-color: #ff4b4b;
+}

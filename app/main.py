@@ -85,9 +85,9 @@ def add_prediction(input_data):
     st.write("The cell cluster is:")
 
     if prediction[0] == 0:
-        st.write('Benign')
+        st.write("<span class='diagnosis benign'>Benign</span>", unsafe_allow_html=True)
     else: 
-        st.write('Malicious')
+        st.write("<span class='diagnosis malicious'>Malicious</span>", unsafe_allow_html=True)
 
     st.write(f"Probability of being benign: ", model.predict_proba(scaled_array)[0][0])
     st.write(f"Probability of being malicious: ", model.predict_proba(scaled_array)[0][1])
