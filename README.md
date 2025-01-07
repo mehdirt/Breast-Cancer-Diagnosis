@@ -34,6 +34,7 @@ The model is trained on a dataset containing measurements of breast cancer cases
 - **Perimeter Mean**
 - **Area Mean**
 - **Smoothness Mean**
+- **Compactness Mean**
 
 These features were used to train the logistic regression model to predict the tumor type. The dataset is preprocessed, ensuring clean and normalized data for effective training.
 
