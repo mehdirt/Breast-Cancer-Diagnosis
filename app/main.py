@@ -3,24 +3,15 @@ import pandas as pd
 import pickle
 import streamlit as st
 import plotly.graph_objects as go
-# from utils.data_utils import get_data # ! MUST BE UNCOMMENTED
+from utils.data_utils import get_data, clean_data
 
-def get_data(path): # ! MUST BE DELETED
-    """"""
-    data = pd.read_csv(path)
-    return data
+def add_sidebar() -> dict:
+    """
+    Create the Streamlit sidebar and collect user input via sliders.
 
-def clean_data(data): # ! MUST BE DELETED
-    """"""
-    data = data.drop(['Unnamed: 32', 'id'], axis=1)
-    
-    data['diagnosis'] = data['diagnosis'].map({'M': 1, 'B': 0})
-
-    return data
-
-
-def add_sidebar():
-    """"""
+    Returns:
+        dict: A dictionary of user-provided input values from the sidebar.
+    """
     st.sidebar.header("Cell Nuclei Measurements")
 
     data = clean_data(get_data(path="data/data.csv"))
@@ -62,17 +53,21 @@ def add_sidebar():
 
     for label, key in slider_labels:
         input_data[key] = st.sidebar.slider(
-                label,
-                min_value=float(0),
-                max_value=float(data[key].max()),
-                value=float(data[key].mean()),
-            )
+            label,
+            min_value=float(0),
+            max_value=float(data[key].max()),
+            value=float(data[key].mean()),
+        )
     
     return input_data
 
+def add_prediction(input_data: dict) -> None:
+    """
+    Load the trained model and scaler, predict the diagnosis, and display results.
 
-def add_prediction(input_data):
-    """"""
+    Args:
+        input_data (dict): Dictionary of user-provided measurements.
+    """
     model = pickle.load(open("model/model.pkl", "rb"))
     scalar = pickle.load(open("model/scalar.pkl", "rb"))
 
@@ -89,14 +84,23 @@ def add_prediction(input_data):
     else: 
         st.write("<span class='diagnosis malicious'>Malicious</span>", unsafe_allow_html=True)
 
-    st.write(f"Probability of being benign: ", model.predict_proba(scaled_array)[0][0])
-    st.write(f"Probability of being malicious: ", model.predict_proba(scaled_array)[0][1])
+    st.write(f"Probability of being benign: {model.predict_proba(scaled_array)[0][0]:.2f}")
+    st.write(f"Probability of being malignant: {model.predict_proba(scaled_array)[0][1]:.2f}")
 
-    st.write("This app can assist medical professionals in making a diagnosis, but should not \
-              be used as a substitute for a professional diagnosis.")
+    st.write("This app can assist medical professionals in making a diagnosis, but should not "
+             "be used as a substitute for a professional diagnosis.")
 
-def get_scaled_values(input_dict, data_path):
-    """"""
+def get_scaled_values(input_dict: dict, data_path: str) -> dict:
+    """
+    Scale the user input values based on the dataset's min-max range.
+
+    Args:
+        input_dict (dict): User-provided measurements.
+        data_path (str): Path to the dataset.
+
+    Returns:
+        dict: Dictionary of scaled values.
+    """
     data = clean_data(get_data(data_path))
 
     X = data.drop(['diagnosis'], axis=1)
@@ -111,8 +115,16 @@ def get_scaled_values(input_dict, data_path):
 
     return scaled_dict
 
-def get_radar_chart(input_data):
-    """"""
+def get_radar_chart(input_data: dict) -> go.Figure:
+    """
+    Generate a radar chart for the input data.
+
+    Args:
+        input_data (dict): User-provided measurements.
+
+    Returns:
+        go.Figure: A Plotly radar chart figure.
+    """
     input_data = get_scaled_values(input_data, data_path="data/data.csv")
 
     categories = ['Radius', 'Texture', 'Perimeter', 'Area', 
@@ -158,17 +170,21 @@ def get_radar_chart(input_data):
     ))
 
     fig.update_layout(
-    polar=dict(
-        radialaxis=dict(
-        visible=True,
-        range=[0, 1]
-        )),
-    showlegend=True
+        polar=dict(
+            radialaxis=dict(
+                visible=True,
+                range=[0, 1]
+            )
+        ),
+        showlegend=True
     )
 
     return fig
 
-def main():
+def main() -> None:
+    """
+    Main function to run the Streamlit app.
+    """
     st.set_page_config(
         page_title="Breast Cancer Predictor",
         page_icon="👨‍⚕️",
@@ -183,10 +199,10 @@ def main():
 
     with st.container():
         st.title("Breast Cancer Predictor")
-        st.write("Please connect this app to your cytology lab to help diagnose breast cancer form your tissue \
-                  sample. This app predicts using a machine learning model whether a breast mass is benign or \
-                  malignant based on the measurements it receives from your cytosis lab. You can also update the \
-                  measurements by hand using the sliders in the sidebar.")
+        st.write(
+            "This app predicts whether a breast mass is benign or malignant "
+            "based on cytology lab measurements. Use the sliders in the sidebar to update measurements."
+        )
     
     col1, col2 = st.columns([4, 1])
     
@@ -195,7 +211,6 @@ def main():
         st.plotly_chart(radar_chart)
     with col2:
         add_prediction(input_data)
-
 
 if __name__ == '__main__':
     main()
