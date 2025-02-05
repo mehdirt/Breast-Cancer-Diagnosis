@@ -59,7 +59,7 @@ The project features a web application where users can:
 3. Visualize the results interactively using Plotly radar charts.
 
 The application is hosted online for ease of access:
-**[Visit the Web App](https://breast-cancer-diagnosis-rt.streamlit.app/)**
+**[Visit the Web App](https://breast-cancer-diagnosis-mehdirt.streamlit.app/)**
 
 ---
 
@@ -103,7 +103,7 @@ To run the project locally, follow these steps:
 
 ## Project Demo
 
-- Explore the web app to see the project in action: **[Live Demo](https://breast-cancer-diagnosis-rt.streamlit.app)**
+- Explore the web app to see the project in action: **[Live Demo](https://breast-cancer-diagnosis-mehdirt.streamlit.app/)**
 - Users can adjust sliders corresponding to the tumor features and instantly view predictions.
 
   ![image](https://github.com/user-attachments/assets/6c836823-f7b3-46d4-8609-89ac0c78ce9d)
